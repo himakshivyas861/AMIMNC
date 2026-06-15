@@ -1,0 +1,202 @@
+{
+	"name": "p3monthly data refresh",
+	"properties": {
+		"description": "keeps only last 12 months data from delete folder",
+		"activities": [
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "p1getmetadata",
+						"type": "DatasetReference",
+						"parameters": {
+							"folderpath": {
+								"value": "@pipeline().parameters.source\n",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(item().name, pipeline().parameters.pattern)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Get Metadata2",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "p1source",
+									"type": "DatasetReference",
+									"parameters": {
+										"folderpath": {
+											"value": "@pipeline().parameters.source",
+											"type": "Expression"
+										},
+										"filename": "@item().name"
+									}
+								},
+								"fieldList": [
+									"lastModified"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@less(\n    ticks(activity('Get Metadata2').output.lastModified),\n    ticks(addToTime(pipeline().parameters.date, -12, 'Month'))\n)\n",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Delete1",
+										"type": "Delete",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"dataset": {
+												"referenceName": "p1source",
+												"type": "DatasetReference",
+												"parameters": {
+													"folderpath": {
+														"value": "@pipeline().parameters.source",
+														"type": "Expression"
+													},
+													"filename": "@item().name"
+												}
+											},
+											"logStorageSettings": {
+												"linkedServiceName": {
+													"referenceName": "sourcecopyraw",
+													"type": "LinkedServiceReference"
+												}
+											},
+											"enableLogging": true,
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"source": {
+				"type": "string"
+			},
+			"pattern": {
+				"type": "string"
+			},
+			"date": {
+				"type": "string",
+				"defaultValue": "@utcNow()"
+			}
+		},
+		"folder": {
+			"name": "KESCO/manual/delete previous data"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-14T16:20:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

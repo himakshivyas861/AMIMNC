@@ -1,0 +1,52 @@
+{
+	"name": "delete any folder",
+	"properties": {
+		"activities": [
+			{
+				"name": "Delete1",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "p1getmetadata",
+						"type": "DatasetReference",
+						"parameters": {
+							"folderpath": "@pipeline().parameters.folder"
+						}
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "sourcecopyraw",
+							"type": "LinkedServiceReference"
+						}
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"parameters": {
+			"folder": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "KESCO/manual/Delete"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-14T16:20:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

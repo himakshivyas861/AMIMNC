@@ -1,0 +1,18 @@
+{
+	"name": "eventbasetriggerstorageevents",
+	"properties": {
+		"description": "this is an event based trigger",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/rawmncfiles/blobs/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/5386edee-aeb9-44b8-987a-033f8dfafa0c/resourceGroups/KESCO_datafactory/providers/Microsoft.Storage/storageAccounts/kescostorage",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

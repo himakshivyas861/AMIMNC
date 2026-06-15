@@ -1,0 +1,15 @@
+{
+	"name": "KESCOADF123",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d7ebba1d-8320-4665-a7b0-a9b0e5dca205",
+		"tenantId": "2d1847b0-a248-4fcd-be1c-096181801b67"
+	}
+}
