@@ -24,7 +24,10 @@
 								"value": "@pipeline().parameters.Container",
 								"type": "Expression"
 							},
-							"folder": "\"\""
+							"folder": {
+								"value": "@item.name()",
+								"type": "Expression"
+							}
 						}
 					},
 					"fieldList": [
@@ -32,6 +35,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {

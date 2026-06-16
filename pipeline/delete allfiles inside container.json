@@ -1,5 +1,5 @@
 {
-	"name": "delete any folder",
+	"name": "delete allfiles inside container",
 	"properties": {
 		"activities": [
 			{
