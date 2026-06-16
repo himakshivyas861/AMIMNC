@@ -16,10 +16,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "p1getmetadata",
+						"referenceName": "deleteanyfoldersource",
 						"type": "DatasetReference",
 						"parameters": {
-							"folderpath": "@pipeline().parameters.folder"
+							"folder": {
+								"value": "@pipeline().parameters.folder",
+								"type": "Expression"
+							}
 						}
 					},
 					"logStorageSettings": {

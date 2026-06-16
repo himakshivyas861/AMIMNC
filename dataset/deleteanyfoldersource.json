@@ -1,0 +1,25 @@
+{
+	"name": "deleteanyfoldersource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sourcecopyraw",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}

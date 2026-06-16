@@ -1,0 +1,9 @@
+{
+	"name": "delete otherfolders",
+	"properties": {
+		"folder": {
+			"name": "KESCO/Auto"
+		},
+		"annotations": []
+	}
+}

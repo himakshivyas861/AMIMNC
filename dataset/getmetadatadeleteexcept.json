@@ -1,0 +1,16 @@
+{
+	"name": "getmetadatadeleteexcept",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sourcecopyraw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			}
+		}
+	}
+}
