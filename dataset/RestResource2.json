@@ -1,0 +1,41 @@
+{
+	"name": "RestResource2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Restfinal",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"base": {
+					"value": "@dataset().base",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"base": {
+				"type": "String"
+			},
+			"endpoint": {
+				"type": "String"
+			},
+			"engine": {
+				"type": "String"
+			},
+			"query": {
+				"type": "String"
+			},
+			"apikey": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(\n  dataset().endpoint,\n  '?engine=',\n  dataset().engine,\n  '&q=',\n  replace(dataset().query,' ','%20'),\n  '&api_key=',\n  trim(dataset().apikey)\n)\n",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
