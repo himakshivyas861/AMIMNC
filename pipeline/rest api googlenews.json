@@ -1,0 +1,100 @@
+{
+	"name": "rest api googlenews",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "restgooglenews",
+						"type": "DatasetReference",
+						"parameters": {
+							"endpoint": {
+								"value": "@pipeline().parameters.endpoint",
+								"type": "Expression"
+							},
+							"engine": {
+								"value": "@pipeline().parameters.engine",
+								"type": "Expression"
+							},
+							"query": {
+								"value": "@pipeline().parameters.query",
+								"type": "Expression"
+							},
+							"country": {
+								"value": "@pipeline().parameters.country",
+								"type": "Expression"
+							},
+							"apiKey": {
+								"value": "@pipeline().parameters.apikey",
+								"type": "Expression"
+							},
+							"baseurl": "@pipeline().parameters.baseurl"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"baseurl": {
+				"type": "string"
+			},
+			"engine": {
+				"type": "string"
+			},
+			"apiKey": {
+				"type": "string"
+			},
+			"country": {
+				"type": "string"
+			},
+			"query": {
+				"type": "string"
+			},
+			"endpoint": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "KESCO/manual/restAPI"
+		},
+		"annotations": []
+	}
+}

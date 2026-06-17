@@ -1,0 +1,47 @@
+{
+	"name": "restgooglenews",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "restgooglenews",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": {
+					"value": "@pipeline().parameters.baseurl",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"endpoint": {
+				"type": "String"
+			},
+			"engine": {
+				"type": "String"
+			},
+			"query": {
+				"type": "String"
+			},
+			"country": {
+				"type": "String"
+			},
+			"apiKey": {
+				"type": "String"
+			},
+			"baseurl": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "restapi"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(\n  dataset().endpoint,\n  '?engine=',\n  dataset().engine,\n  '&q=',\n  replace(dataset().query,' ','%20'),\n  '&g1=',\n  dataset().country,\n  '&api_key=',\n  trim(dataset().apiKey)\n)\n",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
