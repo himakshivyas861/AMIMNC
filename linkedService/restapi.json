@@ -1,0 +1,20 @@
+{
+	"name": "restapi",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"restapi": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "@{linkedService().restapi}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "kescoserver",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDNCNjE1N0NBLTdCNzMtNDYzRS1CRTFCLTE0RTIwRDY3MDE5NF8zMTc1YjYxYi0yOGYxLTQ0N2ItOTFiOS1jZTdjYjVjNDRhY2EiDQp9"
+		}
+	}
+}
