@@ -20,6 +20,9 @@
 		"AzureSqlDatabase2_password": {
 			"value": ""
 		},
+		"Restfinal_password": {
+			"value": ""
+		},
 		"getmeta_connectionString": {
 			"value": ""
 		},
@@ -27,6 +30,9 @@
 			"value": ""
 		},
 		"rawmncLS_connectionString": {
+			"value": ""
+		},
+		"rest123_password": {
 			"value": ""
 		},
 		"sourcecopyraw_connectionString": {
@@ -49,6 +55,24 @@
 		},
 		"AzureSqlDatabase2_properties_typeProperties_userName": {
 			"value": "kescoserver"
+		},
+		"Restfinal_properties_typeProperties_url": {
+			"value": "@{linkedService().base}"
+		},
+		"Restfinal_properties_typeProperties_userName": {
+			"value": "main branch"
+		},
+		"dynamicrest_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
+		},
+		"rest123_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
+		},
+		"rest123_properties_typeProperties_userName": {
+			"value": "kescoserver"
+		},
+		"restapi_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
 		},
 		"eventbasetriggerstorageevents_properties_typeProperties_scope": {
 			"value": "/subscriptions/5386edee-aeb9-44b8-987a-033f8dfafa0c/resourceGroups/KESCO_datafactory/providers/Microsoft.Storage/storageAccounts/kescostorage"

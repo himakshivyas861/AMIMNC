@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase2'"
 		},
+		"Restfinal_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Restfinal'"
+		},
 		"getmeta_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'getmeta'"
@@ -38,6 +42,10 @@
 		"rawmncLS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'rawmncLS'"
+		},
+		"rest123_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'rest123'"
 		},
 		"sourcecopyraw_connectionString": {
 			"type": "secureString",
@@ -66,6 +74,30 @@
 		"AzureSqlDatabase2_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "kescoserver"
+		},
+		"Restfinal_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().base}"
+		},
+		"Restfinal_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "main branch"
+		},
+		"dynamicrest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseurl}"
+		},
+		"rest123_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseurl}"
+		},
+		"rest123_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "kescoserver"
+		},
+		"restapi_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseurl}"
 		},
 		"eventbasetriggerstorageevents_properties_typeProperties_scope": {
 			"type": "string",
@@ -113,6 +145,9 @@
 					"AzureSqlDatabase2_password": {
 						"value": "[parameters('AzureSqlDatabase2_password')]"
 					},
+					"Restfinal_password": {
+						"value": "[parameters('Restfinal_password')]"
+					},
 					"getmeta_connectionString": {
 						"value": "[parameters('getmeta_connectionString')]"
 					},
@@ -121,6 +156,9 @@
 					},
 					"rawmncLS_connectionString": {
 						"value": "[parameters('rawmncLS_connectionString')]"
+					},
+					"rest123_password": {
+						"value": "[parameters('rest123_password')]"
 					},
 					"sourcecopyraw_connectionString": {
 						"value": "[parameters('sourcecopyraw_connectionString')]"
@@ -142,6 +180,24 @@
 					},
 					"AzureSqlDatabase2_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_userName')]"
+					},
+					"Restfinal_properties_typeProperties_url": {
+						"value": "[parameters('Restfinal_properties_typeProperties_url')]"
+					},
+					"Restfinal_properties_typeProperties_userName": {
+						"value": "[parameters('Restfinal_properties_typeProperties_userName')]"
+					},
+					"dynamicrest_properties_typeProperties_url": {
+						"value": "[parameters('dynamicrest_properties_typeProperties_url')]"
+					},
+					"rest123_properties_typeProperties_url": {
+						"value": "[parameters('rest123_properties_typeProperties_url')]"
+					},
+					"rest123_properties_typeProperties_userName": {
+						"value": "[parameters('rest123_properties_typeProperties_userName')]"
+					},
+					"restapi_properties_typeProperties_url": {
+						"value": "[parameters('restapi_properties_typeProperties_url')]"
 					},
 					"eventbasetriggerstorageevents_properties_typeProperties_scope": {
 						"value": "[parameters('eventbasetriggerstorageevents_properties_typeProperties_scope')]"
@@ -168,6 +224,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'KESCOADF123_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "KESCOADF123_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'KESCOADF123_ArmTemplate_1')]"
 			]
 		}
 	]
