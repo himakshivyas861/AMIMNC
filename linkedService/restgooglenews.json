@@ -1,0 +1,17 @@
+{
+	"name": "restgooglenews",
+	"properties": {
+		"parameters": {
+			"baseurl": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "@{linkedService().baseurl}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
