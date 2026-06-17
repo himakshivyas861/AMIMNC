@@ -13,15 +13,14 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/p4delete all folders except dynamic')]",
+			"name": "[concat(parameters('factoryName'), '/rest api googlenews')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "delete all folders except dynamically passed folders",
 				"activities": [
 					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
+						"name": "Copy data1",
+						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -32,129 +31,89 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"dataset": {
-								"referenceName": "p4getmetadata",
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "restgooglenews",
 								"type": "DatasetReference",
 								"parameters": {
-									"contanier": {
-										"value": "@pipeline().parameters.Container",
+									"endpoint": {
+										"value": "@pipeline().parameters.endpoint",
 										"type": "Expression"
 									},
-									"folder": {
-										"value": "@item.name()",
+									"engine": {
+										"value": "@pipeline().parameters.engine",
 										"type": "Expression"
-									}
-								}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@not(contains(pipeline().parameters.keepFolders, item().name))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Filter1').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Delete1",
-									"type": "Delete",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
 									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "p4delete",
-											"type": "DatasetReference",
-											"parameters": {
-												"contanier": {
-													"value": "@pipeline().parameters.container",
-													"type": "Expression"
-												},
-												"folder": "@item().name"
-											}
-										},
-										"logStorageSettings": {
-											"linkedServiceName": {
-												"referenceName": "sourcecopyraw",
-												"type": "LinkedServiceReference"
-											}
-										},
-										"enableLogging": true,
-										"storeSettings": {
-											"type": "AzureBlobStorageReadSettings",
-											"recursive": true,
-											"enablePartitionDiscovery": false
-										}
-									}
+									"query": {
+										"value": "@pipeline().parameters.query",
+										"type": "Expression"
+									},
+									"country": {
+										"value": "@pipeline().parameters.country",
+										"type": "Expression"
+									},
+									"apiKey": {
+										"value": "@pipeline().parameters.apikey",
+										"type": "Expression"
+									},
+									"baseurl": "@pipeline().parameters.baseurl"
 								}
-							]
-						}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"Keepfolders": {
-						"type": "array"
+					"baseurl": {
+						"type": "string"
 					},
-					"Container": {
+					"engine": {
+						"type": "string"
+					},
+					"apiKey": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"query": {
+						"type": "string"
+					},
+					"endpoint": {
 						"type": "string"
 					}
 				},
 				"folder": {
-					"name": "KESCO/manual/Delete"
+					"name": "KESCO/manual/restAPI"
 				},
 				"annotations": []
 			},

@@ -13,97 +13,44 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "restapi",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"baseurl": {
-							"value": "@dataset().baseurl",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"relativeurl": {
-						"type": "String"
-					},
-					"baseurl": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@dataset().relativeurl",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/RestResource2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Restfinal",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"base": {
-							"value": "@dataset().base",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"base": {
-						"type": "String"
-					},
-					"endpoint": {
-						"type": "String"
-					},
-					"engine": {
-						"type": "String"
-					},
-					"query": {
-						"type": "String"
-					},
-					"apikey": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@concat(\n  dataset().endpoint,\n  '?engine=',\n  dataset().engine,\n  '&q=',\n  replace(dataset().query,' ','%20'),\n  '&api_key=',\n  trim(dataset().apikey)\n)\n",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/RestResource3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Restfinal",
+					"referenceName": "sourcecopyraw",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {},
-				"schema": []
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sourcecopyraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					}
+				},
+				"schema": {}
 			},
 			"dependsOn": []
 		},
@@ -354,6 +301,56 @@
 						}
 					}
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/restgooglenews')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "restgooglenews",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"baseurl": {
+							"value": "@pipeline().parameters.baseurl",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"endpoint": {
+						"type": "String"
+					},
+					"engine": {
+						"type": "String"
+					},
+					"query": {
+						"type": "String"
+					},
+					"country": {
+						"type": "String"
+					},
+					"apiKey": {
+						"type": "String"
+					},
+					"baseurl": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "restapi"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat(\n  dataset().endpoint,\n  '?engine=',\n  dataset().engine,\n  '&q=',\n  replace(dataset().query,' ','%20'),\n  '&g1=',\n  dataset().country,\n  '&api_key=',\n  trim(dataset().apiKey)\n)\n",
+						"type": "Expression"
+					}
+				},
+				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -811,106 +808,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataingestionfromsearchio')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "news data ingestion",
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "RestResource2",
-								"type": "DatasetReference",
-								"parameters": {
-									"base": "@pipeline().parameters.baseUrl",
-									"endpoint": {
-										"value": "@pipeline().parameters.endpoint",
-										"type": "Expression"
-									},
-									"engine": "@pipeline().parameters.engine",
-									"query": {
-										"value": "@item.name()",
-										"type": "Expression"
-									},
-									"apikey": {
-										"value": "@pipeline().parameters.apikey",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Json1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"baseurl": {
-						"type": "string"
-					},
-					"endpoint": {
-						"type": "String"
-					},
-					"apikey": {
-						"type": "string"
-					},
-					"engine": {
-						"type": "string"
-					},
-					"query": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "KESCO/restapidataingestion"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/RestResource2')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/delete allfiles inside container')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1090,7 +987,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-06-12T10:32:12Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/normal_copydelete_copy1')]",
@@ -1210,7 +1109,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-06-12T10:32:12Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/normal_copydelete_copy2')]",
@@ -1330,7 +1231,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-06-14T16:08:00Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/p2delete any batch or month or date')]",
@@ -1757,6 +1660,157 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/p1getmetadata')]",
 				"[concat(variables('factoryId'), '/datasets/p1source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p4delete all folders except dynamic')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "delete all folders except dynamically passed folders",
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "p4getmetadata",
+								"type": "DatasetReference",
+								"parameters": {
+									"contanier": {
+										"value": "@pipeline().parameters.Container",
+										"type": "Expression"
+									},
+									"folder": {
+										"value": "@item.name()",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@not(contains(pipeline().parameters.keepFolders, item().name))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Filter1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Filter1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Delete1",
+									"type": "Delete",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "p4delete",
+											"type": "DatasetReference",
+											"parameters": {
+												"contanier": {
+													"value": "@pipeline().parameters.container",
+													"type": "Expression"
+												},
+												"folder": "@item().name"
+											}
+										},
+										"logStorageSettings": {
+											"linkedServiceName": {
+												"referenceName": "sourcecopyraw",
+												"type": "LinkedServiceReference"
+											}
+										},
+										"enableLogging": true,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"Keepfolders": {
+						"type": "array"
+					},
+					"Container": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "KESCO/manual/Delete"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/p4getmetadata')]",
+				"[concat(variables('factoryId'), '/datasets/p4delete')]"
 			]
 		}
 	]

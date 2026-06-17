@@ -27,10 +27,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase2'"
 		},
-		"Restfinal_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'Restfinal'"
-		},
 		"getmeta_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'getmeta'"
@@ -77,11 +73,7 @@
 		},
 		"Restfinal_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "@{linkedService().base}"
-		},
-		"Restfinal_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "main branch"
+			"defaultValue": "@{linkedService().baseurl}"
 		},
 		"dynamicrest_properties_typeProperties_url": {
 			"type": "string",
@@ -96,6 +88,10 @@
 			"defaultValue": "kescoserver"
 		},
 		"restapi_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseurl}"
+		},
+		"restgooglenews_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{linkedService().baseurl}"
 		},
@@ -197,7 +193,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"parameters": {
-					"base": {
+					"baseurl": {
 						"type": "String"
 					}
 				},
@@ -206,12 +202,7 @@
 				"typeProperties": {
 					"url": "[parameters('Restfinal_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('Restfinal_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('Restfinal_password')]"
-					}
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -321,6 +312,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/restgooglenews')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"baseurl": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('restgooglenews_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sourcecopyraw')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -376,6 +387,21 @@
 						}
 					}
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "KESCO/manual/restAPI"
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -497,52 +523,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sourcecopyraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sourcecopyraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "output"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sourcecopyraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sourcecopyraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "output"
-					}
-				},
-				"schema": {}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/sourcecopyraw')]"

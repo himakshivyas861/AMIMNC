@@ -20,9 +20,6 @@
 		"AzureSqlDatabase2_password": {
 			"value": ""
 		},
-		"Restfinal_password": {
-			"value": ""
-		},
 		"getmeta_connectionString": {
 			"value": ""
 		},
@@ -57,10 +54,7 @@
 			"value": "kescoserver"
 		},
 		"Restfinal_properties_typeProperties_url": {
-			"value": "@{linkedService().base}"
-		},
-		"Restfinal_properties_typeProperties_userName": {
-			"value": "main branch"
+			"value": "@{linkedService().baseurl}"
 		},
 		"dynamicrest_properties_typeProperties_url": {
 			"value": "@{linkedService().baseurl}"
@@ -72,6 +66,9 @@
 			"value": "kescoserver"
 		},
 		"restapi_properties_typeProperties_url": {
+			"value": "@{linkedService().baseurl}"
+		},
+		"restgooglenews_properties_typeProperties_url": {
 			"value": "@{linkedService().baseurl}"
 		},
 		"eventbasetriggerstorageevents_properties_typeProperties_scope": {

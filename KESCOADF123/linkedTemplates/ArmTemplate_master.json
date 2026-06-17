@@ -27,10 +27,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase2'"
 		},
-		"Restfinal_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'Restfinal'"
-		},
 		"getmeta_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'getmeta'"
@@ -77,11 +73,7 @@
 		},
 		"Restfinal_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "@{linkedService().base}"
-		},
-		"Restfinal_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "main branch"
+			"defaultValue": "@{linkedService().baseurl}"
 		},
 		"dynamicrest_properties_typeProperties_url": {
 			"type": "string",
@@ -96,6 +88,10 @@
 			"defaultValue": "kescoserver"
 		},
 		"restapi_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseurl}"
+		},
+		"restgooglenews_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "@{linkedService().baseurl}"
 		},
@@ -145,9 +141,6 @@
 					"AzureSqlDatabase2_password": {
 						"value": "[parameters('AzureSqlDatabase2_password')]"
 					},
-					"Restfinal_password": {
-						"value": "[parameters('Restfinal_password')]"
-					},
 					"getmeta_connectionString": {
 						"value": "[parameters('getmeta_connectionString')]"
 					},
@@ -184,9 +177,6 @@
 					"Restfinal_properties_typeProperties_url": {
 						"value": "[parameters('Restfinal_properties_typeProperties_url')]"
 					},
-					"Restfinal_properties_typeProperties_userName": {
-						"value": "[parameters('Restfinal_properties_typeProperties_userName')]"
-					},
 					"dynamicrest_properties_typeProperties_url": {
 						"value": "[parameters('dynamicrest_properties_typeProperties_url')]"
 					},
@@ -198,6 +188,9 @@
 					},
 					"restapi_properties_typeProperties_url": {
 						"value": "[parameters('restapi_properties_typeProperties_url')]"
+					},
+					"restgooglenews_properties_typeProperties_url": {
+						"value": "[parameters('restgooglenews_properties_typeProperties_url')]"
 					},
 					"eventbasetriggerstorageevents_properties_typeProperties_scope": {
 						"value": "[parameters('eventbasetriggerstorageevents_properties_typeProperties_scope')]"
